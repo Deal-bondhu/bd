@@ -9,8 +9,7 @@ import { IoMdShare } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import CornerRibbon from "./CornerRibbon";
 
-
-const ProductCard = () => {
+const ProductCard = ({ product }) => {
   const [isLiked, setLiked] = useState(false);
   const router = useRouter();
 
@@ -18,29 +17,21 @@ const ProductCard = () => {
   // https://slickdeals.net/f/18786394-the-north-face-men-s-vault-backpack-clay-gray-new-taupe-green-39-macy-s?src=frontpage&attrsrc=Frontpage%3AType%3AMissed
   return (
     <div
-      onClick={() => router.push(`/product/${id}`)}
+      onClick={() =>
+        router.push(`/product/${product?._id ? product?._id : id}`)
+      }
       className="relative overflow-hidden w-full max-w-[200px] p-2  bg-[#d1e2f5] hover:bg-[#76ace9] rounded-lg shadow-2xl my-2 cursor-pointer transition-transform duration-300 hover:scale-105"
     >
-      {/* avatar and found people  */}
-      
-      {/* <div className=" w-full flex items-center gap-1">
-        <div className="avatar">
-          <div className="w-7 rounded-full ">
-            <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
-          </div>
-        </div>
-        <p className="line-clamp-1 text-[12px] font-semibold">
-          Found By Josh Tailor
-        </p>
-      </div> */}
-      
-
       {/* ribbon component  */}
-      <CornerRibbon></CornerRibbon>
+      <CornerRibbon discountValue={product?.offer_percent}></CornerRibbon>
       {/* product image  */}
       <div className="w-full relative bg-[#F0F0F0] mt-1 rounded-md overflow-hidden flex justify-center items-center">
         <img
-          src="https://static.slickdealscdn.com/attachment/2/0/3/0/0/9/6/2/200x200/18682408.thumb"
+          src={
+            product?.product_image
+              ? product?.product_image
+              : "https://static.slickdealscdn.com/attachment/2/0/3/0/0/9/6/2/200x200/18682408.thumb"
+          }
           alt="Bag"
           className="w-full aspect-square object-contain mix-blend-multiply"
         />
@@ -51,22 +42,25 @@ const ProductCard = () => {
       </div>
 
       {/* product name  */}
-      <p className="mt-2 line-clamp-2 text-[12px] font-medium">
-        The North Face Men's Vault Backpack (Clay Gray/New Taupe Green, Fits 15"
-        Laptop)
+      <p className="mt-2 min-h-9 line-clamp-2 text-[12px] font-medium">
+        {
+          product?.title ? product.title : 'Unknown'
+        }
       </p>
 
       {/* price  */}
       <div className="flex items-center gap-3 mt-2 font-medium">
         <GiPriceTag />
-        <p>$39</p>
+        <p>{product?.offer_price ? product?.offer_price + "TK": 'Unknown'}</p>
         {/* discount  */}
-        <span className="line-through text-[12px] font-semibold text-[#FF8F2C]">$45</span>
+        <span className="line-through text-[12px] font-semibold text-red-600">
+         {product?.regular_price ? product?.regular_price + 'TK'  : 'Unknown'}
+        </span>
       </div>
 
       {/* brand name  */}
       <div className="flex items-center gap-3">
-        <MdLabelImportant /> <span className="font-medium text-sm">Amazon</span>
+        <MdLabelImportant /> <span className="font-medium text-sm">{product?.company ? product?.company : 'Unknown'}</span>
       </div>
 
       <hr className="w-full mt-2 text-[#999999]" />

@@ -13,6 +13,12 @@ export default function Home() {
       <div className="w-full lg:mt-15 md:mt-12 smd:mt-10 mt-8 flex lg:flex-row md:flex-row smd:flex-col-reverse flex-col-reverse gap-4">
         {/* two section will be flex in large screen md and small devices flex row reverse  */}
         <section className="lg:w-[70%] md:w-[65%]">
+          {/* temporary */}
+          <HomeLeftComponents
+            componentName="All Products"
+            Heading="Products"
+          ></HomeLeftComponents>
+
           <HomeLeftComponents
             componentName="just-for-you"
             Heading="Just For You"
@@ -23,7 +29,9 @@ export default function Home() {
             Heading="Trending Stores"
           ></HomeLeftComponents>
 
-          <TopCategories></TopCategories>
+          <HomeLeftComponents></HomeLeftComponents>
+
+          <HomeLeftComponents></HomeLeftComponents>
         </section>
         <section className="lg:w-[30%] md:w-[35%] w-full">
           <HomeRightComponents
@@ -37,8 +45,14 @@ export default function Home() {
             Heading="Trending Deals"
             HeadingIcon={<IoTrendingUp />}
           ></HomeRightComponents>
+          <HomeRightComponents
+            componentName={"trending-deals"}
+            Heading="Trending Deals"
+            HeadingIcon={<IoTrendingUp />}
+          ></HomeRightComponents>
         </section>
       </div>
+      <TopCategories></TopCategories>
     </>
   );
 }
