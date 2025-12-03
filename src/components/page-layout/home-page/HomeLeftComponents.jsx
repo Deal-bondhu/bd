@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { FreeMode, Navigation } from "swiper/modules";
 import ProductCard from "@/components/global-layout-components/ProductCard";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import AllProductLink from "@/components/sub-components/home-left-components/AllProductLink";
 
 const HomeLeftComponents = ({
@@ -13,6 +13,16 @@ const HomeLeftComponents = ({
 }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (componentName === "All Products") {
+      fetch("https://dealbondhu.vercel.app/get_products")
+        .then((res) => res.json())
+        .then((products) => setData(products))
+        .catch((err) => console.error(err));
+    }
+  }, [componentName]);
 
   return (
     <section
@@ -20,61 +30,112 @@ const HomeLeftComponents = ({
         componentName !== "just-for-you" && "mt-2"
       } relative`}
     >
-      <AllProductLink
-        Heading={Heading}
-        categoryName={componentName}
-      ></AllProductLink>
+      <AllProductLink Heading={Heading} categoryName={componentName} />
 
-      <Swiper
-        freeMode={true}
-        spaceBetween={10}
-        watchSlidesProgress={true} // required for arrows + freeMode
-        navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
-        }}
-        onBeforeInit={(swiper) => {
-          swiper.params.navigation.prevEl = prevRef.current;
-          swiper.params.navigation.nextEl = nextRef.current;
-        }}
-        breakpoints={{
-          0: { slidesPerView: 1, slidesPerGroup: 1 },
-          320: { slidesPerView: 1, slidesPerGroup: 1 },
-          425: { slidesPerView: 2, slidesPerGroup: 2 },
-          610: { slidesPerView: 3, slidesPerGroup: 3 },
-          1024: { slidesPerView: 4, slidesPerGroup: 4 },
-        }}
-        modules={[FreeMode, Navigation]}
-        className="mySwiper relative"
-      >
-        {[...Array(15)].map((_, i) => (
-          <SwiperSlide className="smd:max-w-[300px] mb-10" key={i}>
-            <ProductCard>{i + 1}</ProductCard>
-          </SwiperSlide>
-        ))}
-
-        <button
-          ref={prevRef}
-          className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+      {componentName === "All Products" ? (
+        <Swiper
+          freeMode={true}
+          spaceBetween={10}
+          watchSlidesProgress={true}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          onBeforeInit={(swiper) => {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+          }}
+          breakpoints={{
+            0: { slidesPerView: 1, slidesPerGroup: 1 },
+            425: { slidesPerView: 2, slidesPerGroup: 2 },
+            610: { slidesPerView: 3, slidesPerGroup: 3 },
+            1024: { slidesPerView: 4, slidesPerGroup: 4 },
+          }}
+          modules={[FreeMode, Navigation]}
+          className="mySwiper relative"
         >
-          <img
-            src="/images/left-arrow.png"
-            alt="Previous"
-            className="w-6 aspect-square"
-          />
-        </button>
+          {data?.map((singleData, index) => (
+            <SwiperSlide
+              className="smd:max-w-[300px] mb-10"
+              key={singleData?._id || index}
+            >
+              <ProductCard product={singleData} />
+            </SwiperSlide>
+          ))}
 
-        <button
-          ref={nextRef}
-          className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+          <button
+            ref={prevRef}
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+          >
+            <img
+              src="/images/left-arrow.png"
+              alt="Previous"
+              className="w-6 aspect-square"
+            />
+          </button>
+
+          <button
+            ref={nextRef}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+          >
+            <img
+              src="/images/right-arrow.png"
+              alt="Next"
+              className="w-6 aspect-square"
+            />
+          </button>
+        </Swiper>
+      ) : (
+        <Swiper
+          freeMode={true}
+          spaceBetween={10}
+          watchSlidesProgress={true}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          onBeforeInit={(swiper) => {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+          }}
+          breakpoints={{
+            0: { slidesPerView: 1, slidesPerGroup: 1 },
+            425: { slidesPerView: 2, slidesPerGroup: 2 },
+            610: { slidesPerView: 3, slidesPerGroup: 3 },
+            1024: { slidesPerView: 4, slidesPerGroup: 4 },
+          }}
+          modules={[FreeMode, Navigation]}
+          className="mySwiper relative"
         >
-          <img
-            src="/images/right-arrow.png"
-            alt="Next"
-            className="w-6 aspect-square"
-          />
-        </button>
-      </Swiper>
+          {[...Array(15)].map((_, i) => (
+            <SwiperSlide className="smd:max-w-[300px] mb-10" key={i}>
+              <ProductCard>{i + 1}</ProductCard>
+            </SwiperSlide>
+          ))}
+
+          <button
+            ref={prevRef}
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+          >
+            <img
+              src="/images/left-arrow.png"
+              alt="Previous"
+              className="w-6 aspect-square"
+            />
+          </button>
+
+          <button
+            ref={nextRef}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full shadow p-2 hover:scale-110 transition"
+          >
+            <img
+              src="/images/right-arrow.png"
+              alt="Next"
+              className="w-6 aspect-square"
+            />
+          </button>
+        </Swiper>
+      )}
     </section>
   );
 };
