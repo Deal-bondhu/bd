@@ -1,0 +1,57 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+const CommentProduct = ({ id }) => {
+  const router = useRouter();
+  const session = useSession();
+  const { user } = session?.data;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const target = e.target;
+
+    if (!user) {
+      target.reset();
+      router.push("/auth/login");
+      toast.error("LogIn First");
+      return;
+    }
+
+    const value = target.comment.value;
+    const comment = value.trim();
+    if (!comment) toast.error("comment cant be empty");
+    else {
+      const object = {
+        id,
+        comment,
+      };
+      fetch("/api/cookies/comment_product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(object),
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if (result?.acknowledged) {
+            toast.success("commented");
+            target.reset();
+            router.refresh();
+          }
+        });
+    }
+  };
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col my-5 gap-3">
+      <label htmlFor="">Comment</label>
+      <input type="text" className="input" name="comment" required />
+      <button className="btn btn-md w-fit mx-2">Leave Comment</button>
+    </form>
+  );
+};
+
+export default CommentProduct;

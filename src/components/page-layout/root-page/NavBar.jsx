@@ -3,15 +3,15 @@ import { LuMenu } from "react-icons/lu";
 import { BsSearch } from "react-icons/bs";
 // import { PiBellSimpleRingingThin } from "react-icons/pi";
 // import { BsPhone } from "react-icons/bs";
-import { HiUserCircle } from "react-icons/hi2";
 import BrandName from "@/components/global-layout-components/BrandName";
 import PostDeal from "@/components/sub-components/navbar/PostDeal";
 import { usePathname } from "next/navigation";
+import Sign from "@/components/sub-components/navbar/Sign";
 
 const NavBar = () => {
   const pathname = usePathname();
 
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/products")) {
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth")) {
     return;
   } else {
     return (
@@ -47,10 +47,7 @@ const NavBar = () => {
             <BsPhone />
             <p>Go Mobile</p>
           </div> */}
-            <div className=" bg-[#196296] hover:bg-[#0ef]">
-              <HiUserCircle />
-              <p className="text-[#1A1A1A]">Sign Up</p>
-            </div>
+            <Sign></Sign>
           </div>
 
           {/* menu for small screen  */}
