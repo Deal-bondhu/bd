@@ -1,13 +1,26 @@
 import ProductCard from "@/components/global-layout-components/ProductCard";
 
-const page = async ({ params }) => {
+const page = async ({ params, searchParams }) => {
   const { category } = await params;
+  const { subcategory } = await searchParams;
+  const deCodedCategory = decodeURIComponent(category);
+  const deCodedSubCategory = decodeURIComponent(subcategory);
 
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/get_products`);
+  const res = await fetch(
+    `${process.env.NEXT_BACKEND_URL}/get_products/${encodeURIComponent(
+      category
+    )}?subcategory=${encodeURIComponent(subcategory)}`
+  );
   const data = await res.json();
   return (
     <div className="w-full lg:w-4/5 mx-auto">
-      <p className="font-bold text-3xl text-center my-5">All Products</p>
+      <div className="my-5">
+        <p className="font-bold text-3xl text-center">{deCodedCategory}</p>
+        <p className="font-medium text-xl text-center">
+          {deCodedSubCategory === "undefined" ? "" : deCodedSubCategory}
+        </p>
+      </div>
+
       <div className="w-full">
         {data?.length === 0 ? (
           <p className="text-center">No Product Found</p>
@@ -18,36 +31,6 @@ const page = async ({ params }) => {
             })}
           </div>
         )}
-      </div>
-      <div className="overflow-x-auto">
-        <table className="table table-zebra">
-          {/* head */}
-          {/* <thead>
-            <tr>
-              <th className="text-center">Serial No</th>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Product Link</th>
-            </tr>
-          </thead> */}
-          {/* <tbody>
-            {data?.map((product, index) => {
-              return (
-                <tr key={index}>
-                  <th className="text-center">{index + 1}</th>
-                  <td>
-                    {" "}
-                    <div className="line-clamp-1">{product.title}</div>
-                  </td>
-                  <td>{product.company}</td>
-                  <td>
-                    <div className="line-clamp-1">{product.product_link}</div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody> */}
-        </table>
       </div>
     </div>
   );

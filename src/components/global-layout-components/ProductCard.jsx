@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import { GiPriceTag } from "react-icons/gi";
+
 import { MdLabelImportant } from "react-icons/md";
-import { FcLike } from "react-icons/fc";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { MdOutlineInsertComment } from "react-icons/md";
+
 import { IoMdShare } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import CornerRibbon from "./CornerRibbon";
@@ -13,17 +11,27 @@ const ProductCard = ({ product }) => {
   const [isLiked, setLiked] = useState(false);
   const router = useRouter();
 
-  const id = "id";
-  // https://slickdeals.net/f/18786394-the-north-face-men-s-vault-backpack-clay-gray-new-taupe-green-39-macy-s?src=frontpage&attrsrc=Frontpage%3AType%3AMissed
+  const handleRoute = async (product) => {
+    // make product object like {product : category}
+    fetch("/api/cookies/visitor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        router.push(`/product/${product?._id}`);
+      });
+  };
   return (
     <div
-      onClick={() =>
-        router.push(`/product/${product?._id ? product?._id : id}`)
-      }
+      onClick={() => handleRoute(product)}
       className="relative overflow-hidden w-full max-w-[200px] p-2  bg-[#d1e2f5] hover:bg-[#76ace9] rounded-lg shadow-2xl my-2 cursor-pointer transition-transform duration-300 hover:scale-105"
     >
       {/* ribbon component  */}
-      <CornerRibbon discountValue={product?.offer_percent}></CornerRibbon>
+      <CornerRibbon discount={product?.offer_percent}></CornerRibbon>
       {/* product image  */}
       <div className="w-full relative bg-[#F0F0F0] mt-1 rounded-md overflow-hidden flex justify-center items-center">
         <img
@@ -42,46 +50,27 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* product name  */}
-      <p className="mt-2 min-h-9 line-clamp-2 text-[12px] font-medium">
-        {
-          product?.title ? product.title : 'Unknown'
-        }
+      <p className="mt-2 line-clamp-2 min-h-9 text-[12px] font-medium">
+        {product?.title ? product.title : "Unknown"}
       </p>
 
       {/* price  */}
       <div className="flex items-center gap-3 mt-2 font-medium">
-        <GiPriceTag />
-        <p>{product?.offer_price ? product?.offer_price + "TK": 'Unknown'}</p>
+        {/* <GiPriceTag /> */}
+        <img className="w-4 aspect-square" src="/logo/bdt-logo.png" alt="" />
+        <p className="text-[12px]">{product?.offer_price ? product?.offer_price + " TK" : "Unknown"}</p>
         {/* discount  */}
         <span className="line-through text-[12px] font-semibold text-red-600">
-         {product?.regular_price ? product?.regular_price + 'TK'  : 'Unknown'}
+          {product?.regular_price ? product?.regular_price + " TK" : "Unknown"}
         </span>
       </div>
 
       {/* brand name  */}
       <div className="flex items-center gap-3">
-        <MdLabelImportant /> <span className="font-medium text-sm">{product?.company ? product?.company : 'Unknown'}</span>
-      </div>
-
-      <hr className="w-full mt-2 text-[#999999]" />
-
-      {/* like comment share  */}
-      <div className="mt-2 w-full flex justify-between items-center">
-        {/* like  */}
-        <div className="flex items-center gap-1">
-          {isLiked ? <FcLike /> : <FcLikePlaceholder />}{" "}
-          <span className="text-sm">23</span>
-        </div>
-        {/* comment  */}
-        <div className="flex items-center gap-1">
-          <MdOutlineInsertComment />
-          <span className="text-sm">6</span>
-        </div>
-        {/* share  */}
-        <div className="flex items-center gap-1">
-          <IoMdShare />
-          <span className="text-sm">2</span>
-        </div>
+        <MdLabelImportant />{" "}
+        <span className="font-medium text-xso">
+          {product?.company ? product?.company : "Unknown"}
+        </span>
       </div>
     </div>
   );

@@ -1,27 +1,38 @@
-import { FcLikePlaceholder } from "react-icons/fc";
-import { FcLike } from "react-icons/fc";
-import { FcDislike } from "react-icons/fc";
 import { MdOutlineComment } from "react-icons/md";
 import { GiClick } from "react-icons/gi";
-import { IoIosSend } from "react-icons/io";
 import { CiBookmark } from "react-icons/ci";
 import RedirectButton from "@/components/page-layout/product-page/RedirectButton";
+import Liked from "@/components/page-layout/product-details-page/Liked";
+import { cookies } from "next/headers";
+import Unlike from "@/components/page-layout/product-details-page/Unlike";
+import CommentProduct from "@/components/page-layout/product-details-page/CommentProduct";
+import SaveProduct from "@/components/page-layout/product-details-page/SaveProduct";
 
 const page = async ({ params }) => {
   const { id } = await params;
+  const cookieStore = await cookies();
 
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/get_product/${id}`);
+  const visitor = cookieStore.get("visitor");
+  const user_id = JSON.parse(visitor.value)?.user_id;
+  // ${process.env.NEXT_BACKEND_URL}
+  const res = await fetch(
+    `http://localhost:5000
+/get_product/${id}`,
+    {
+      headers: {
+        "x-visitor-id": user_id,
+      },
+    }
+  );
 
-  const product = await res.json()
-
+  const product = await res.json();
   return (
     <section className="w-full">
       {/* product details div  */}
       <div className="w-[96%] mx-auto mt-10 flex flex-col smd:flex-row rounded-md shadow-md items-center smd:items-stretch">
         <div className="w-full smd:w-2/5 max-w-[270px] smd:max-w-[310px] aspect-square bg-[#d1e2f5] rounded-lg shadow-2xl">
           <img
-            src={product?.product_image ? product?.product_image :"https://static.slickdealscdn.com/attachment/2/0/3/0/0/9/6/2/200x200/18682408.thumb"}
-            
+            src={product?.product_image}
             alt=""
             className="h-full w-full object-cover mix-blend-multiply"
           />
@@ -30,37 +41,50 @@ const page = async ({ params }) => {
           <p className="text-sm md:text-lg lg:text-2xl font-medium">
             {product?.title}
           </p>
-          <p className="my-2 md:my-4 font-semibold md:text-xl lg:text-3xl">
-            {product?.offer_price}TK <span className="text-[#777777] line-through">{product?.regular_price}TK</span>{" "}
-            <span className="text-green-500">{product?.offer_percent}% OFF</span>
+          <div className="w-fit px-3 mt-2 text-white font-medium rounded-lg bg-[linear-gradient(21deg,rgba(255,54,67,1)_20%,rgba(209,65,82,1)_56%,rgba(219,127,136,1)_84%,rgba(232,209,209,1)_100%)]">
+            {product?.offer_percent}% OFF
+          </div>
+          <p className="mb-2 md:my-4 font-semibold md:text-xl lg:text-3xl">
+            {product?.offer_price} TK{" "}
+            <span className="text-[#777777] line-through lg:text-xl md:text-sm">
+              {product?.regular_price} TK
+            </span>
           </p>
 
           {/* like dislike comment views */}
           <div className="text-sm md:text-lg lg:text-xl flex items-center gap-3 lg:gap-10">
             {/* if like use like here  */}
-            <p className="flex gap-1 items-center">
-              17 <FcLikePlaceholder />
-              {/* <FcLike /> */}
-            </p>
-            <p className="flex gap-1 items-center">
-              3 <FcDislike />
-            </p>
+            <Liked
+              liked={product?.liked}
+              id={product?._id}
+              count={product?.like_count}
+            ></Liked>
+            <Unlike
+              unliked={product?.unliked}
+              id={product?._id}
+              count={product?.unlike_count}
+            ></Unlike>
             <p className="flex gap-1 items-center">
               <MdOutlineComment />
-              102
+              {product?.comment_count}
             </p>
             <p className="flex gap-1 items-center">
               <GiClick />
-              23,549
+              {product?.click_count}
             </p>
           </div>
 
           {/* deal button share and bookmark  */}
           <div className="mt-3 md:mt-6 flex gap-3 items-center">
-            <RedirectButton title={product?.title} product_link={product?.product_link} company={product?.company}></RedirectButton>
-            <div className="p-3 rounded-full border w-fit hover:bg-gray-400 hover:text-white">
-              <IoIosSend />
-            </div>
+            <RedirectButton
+              title={product?.title}
+              product_link={product?.product_link}
+              company={product?.company}
+            ></RedirectButton>
+            <SaveProduct
+              id={product?._id}
+              isSaved={product?.isSaved}
+            ></SaveProduct>
             <div className="p-3 rounded-full border w-fit hover:bg-gray-400 hover:text-white">
               <CiBookmark />
             </div>
@@ -71,15 +95,6 @@ const page = async ({ params }) => {
       {/* tab section  */}
       <section className="bg-[#FFFFFF] mt-0 m-4 mmd:p-4 ">
         <div className="tabs tabs-border">
-          {/* <input
-            type="radio"
-            name="my_tabs_2"
-            className="tab"
-            aria-label="Deal Details"
-            defaultChecked
-          />
-          <div className="tab-content p-2">Tab content 1</div>  */}
-
           <input
             type="radio"
             name="my_tabs_2"
@@ -87,16 +102,15 @@ const page = async ({ params }) => {
             aria-label="Product Info"
             defaultChecked
           />
-          <div className="tab-content   p-2">{product?.product_info}</div>
-
-          {/* <input
-            type="radio"
-            name="my_tabs_2"
-            className="tab"
-            aria-label="Community Notes"
-          />
-          <div className="tab-content  p-2">Tab content 3</div> */}
+          <div
+            className="tab-content   p-2"
+            dangerouslySetInnerHTML={{ __html: product?.product_info }}
+          ></div>
         </div>
+      </section>
+
+      <section className="mx-auto w-[96%]">
+        <CommentProduct id={product?._id}></CommentProduct>
       </section>
     </section>
   );

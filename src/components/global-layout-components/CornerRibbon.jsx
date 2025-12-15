@@ -1,4 +1,4 @@
-const CornerRibbon = ({discountValue}) => {
+const CornerRibbon = ({discount}) => {
 
   const ribbonText = {
     backgroundColor: "#a00",
@@ -18,7 +18,7 @@ const CornerRibbon = ({discountValue}) => {
     textShadow: "0 0 5px #444",
   };
 
-  return <p style={ribbonText} className="text-sm">{discountValue}% OFF!</p>;
+  return <p style={ribbonText} className="text-sm">{discount}% OFF!</p>;
 };
 
 export default CornerRibbon;
