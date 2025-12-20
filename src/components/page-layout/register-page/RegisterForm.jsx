@@ -50,7 +50,6 @@ const RegisterForm = () => {
         password,
         redirect: false,
       });
-      console.log(response)
       if (response.ok) {
         toast.success("Registration Successful");
         router.push("/");
@@ -71,7 +70,7 @@ const RegisterForm = () => {
           name="register_method_value"
           required
         />
-        <p
+        {/* <p
           onClick={() => {
             registerType === "email"
               ? setRegisterType("tel")
@@ -80,7 +79,7 @@ const RegisterForm = () => {
           className="link link-hover hover:text-blue-600 mb-3"
         >
           use {registerType === "email" ? "number" : "email"} instead
-        </p>
+        </p> */}
         <label className="label">Your Name</label>
         <input
           type="text"
@@ -106,7 +105,12 @@ const RegisterForm = () => {
           name="confirm_password"
         />
         <div className="flex justify-between items-center">
-          <p className="link link-hover hover:text-red-600">Forgot password?</p>
+          <Link href={"/reset_password"}>
+            <p className="link link-hover hover:text-red-600">
+              Forgot password?
+            </p>
+          </Link>
+
           <Link href={"/auth/login"}>
             <p className="link link-hover hover:text-blue-600">Sign In</p>
           </Link>

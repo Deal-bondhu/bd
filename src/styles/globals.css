@@ -93,13 +93,22 @@ body {
   color: #1a1a1a;
   font-size: 13px;
   white-space: nowrap;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
 #trending-component div:hover {
   color: #196296;
-  /* text-shadow: -2px 2px 3px #2ea1cb; */
+}
+
+#trending-component div:hover li a {
+  color: black;
+  font-weight: 500;
+}
+
+#trending-component div:hover li a:hover {
+  color: #196296;
+  font-weight: 500;
 }
 
 #deal_form fieldset{

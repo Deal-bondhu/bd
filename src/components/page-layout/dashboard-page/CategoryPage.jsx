@@ -30,6 +30,7 @@ const CategoryPage = () => {
       if (!data.success) {
         toast.error(data.message);
       } else {
+        categoryRef.current.value = ''
         setRefresh(!refresh);
         toast.success(data.message);
       }
@@ -53,6 +54,7 @@ const CategoryPage = () => {
       if (!data.success) {
         toast.error(data.message);
       } else {
+        subCategoryRef.current.value = ''
         setRefresh(!refresh);
         toast.success(data.message);
       }
@@ -64,10 +66,28 @@ const CategoryPage = () => {
       method: "DELETE",
     });
     const result = await res.json();
-    if(result.acknowledged === true){
-      toast.success('Category Deleted')
-      setRefresh(!refresh)
-      return
+    if (result.acknowledged === true) {
+      toast.success("Category Deleted");
+      setRefresh(!refresh);
+      return;
+    }
+  };
+
+  const handleDeleteSubCategory = async (categoryId, subcategoryName) => {
+    const res = await fetch(
+      `http://localhost:5000/delete_subcategory/${categoryId}?subcategory=${encodeURIComponent(
+        subcategoryName
+      )}`,
+      {
+        method: "DELETE",
+      }
+    );
+    const result = await res.json();
+    if (result.acknowledged === true) {
+      setRefresh(prev => !prev)
+      toast.success(`${subcategoryName} deleted`);
+    } else {
+      toast.error("Failed Try Again");
     }
   };
 
@@ -113,7 +133,17 @@ const CategoryPage = () => {
         <ul className="space-y-2">
           {activeCategoryObj?.subcategories?.map((sub, index) => (
             <li key={index} className="p-2 bg-gray-100 rounded">
-              {sub}
+              <div className="flex items-center justify-between">
+                <p>{sub}</p>
+                <div
+                  className="hover:cursor-pointer"
+                  onClick={() =>
+                    handleDeleteSubCategory(activeCategoryObj?._id, sub)
+                  }
+                >
+                  <GoTrash />
+                </div>
+              </div>
             </li>
           ))}
           <div className="flex flex-col gap-3 items-start mt-4">
@@ -143,22 +173,23 @@ const CategoryPage = () => {
         <label htmlFor="my-drawer-5" className="drawer-overlay"></label>
         <ul className="menu bg-base-200 w-80 p-4 space-y-2">
           {categories?.map((category) => (
-            <li
-              key={category.name}
-              className="flex flex-row items-center gap-1"
-            >
-              <button
-                onClick={() => handleCategoryClick(category.name)}
-                className={`w-full text-left px-2 py-1 rounded ${
+            <li key={category.name} className="">
+              <div
+                className={`flex flex-row items-center gap-2 ${
                   activeCategory === category.name
                     ? "bg-[#E1E1E2] text-black"
                     : ""
                 }`}
               >
-                {category.name}
-              </button>
-              <div onClick={() => handleDeleteCategory(category?._id)}>
-                <GoTrash />
+                <button
+                  onClick={() => handleCategoryClick(category.name)}
+                  className={`w-full text-left px-2 py-1 rounded `}
+                >
+                  {category.name}
+                </button>
+                <div onClick={() => handleDeleteCategory(category?._id)}>
+                  <GoTrash />
+                </div>
               </div>
             </li>
           ))}

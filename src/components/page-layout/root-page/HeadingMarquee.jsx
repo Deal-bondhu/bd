@@ -8,7 +8,10 @@ const HeadingMarquee = () => {
   if (
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/products") ||
-    pathname.startsWith("/auth")
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/reset_password") ||
+    pathname.startsWith("/verify_reset_code") ||
+    pathname.startsWith("/reset_new_password")
   ) {
     return;
   } else {

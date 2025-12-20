@@ -5,7 +5,8 @@ const uri = process.env.MONGODB_URI;
 export const collections = {
   users: "users",
   categories : 'categories',
-  saved_products : 'saved_products'
+  saved_products : 'saved_products',
+  products : 'products'
 };
 
 if (!uri) {

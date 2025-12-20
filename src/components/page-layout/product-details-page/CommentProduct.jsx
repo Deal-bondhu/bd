@@ -7,13 +7,13 @@ import toast from "react-hot-toast";
 const CommentProduct = ({ id }) => {
   const router = useRouter();
   const session = useSession();
-  const { user } = session?.data;
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const target = e.target;
 
-    if (!user) {
+    if (!session?.data?.user) {
       target.reset();
       router.push("/auth/login");
       toast.error("LogIn First");

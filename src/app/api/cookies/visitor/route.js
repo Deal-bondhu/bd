@@ -5,7 +5,7 @@ export async function GET(req) {
   const cookieStore = await cookies();
   const visitor = cookieStore.get("visitor");
   const user_id = JSON.parse(visitor.value)?.user_id;
-// ${process.env.NEXT_BACKEND_URL}
+  // http://localhost:5000
   const response = await fetch(`http://localhost:5000/recent_clicks`, {
     method: "POST",
     headers: {
@@ -32,17 +32,13 @@ export async function POST(req) {
     subcategory: product_object?.subcategory,
   };
 
-  const response = await fetch(
-    `${process.env.NEXT_BACKEND_URL}
-/upload_click_products`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(clicked_product),
-    }
-  );
+  const response = await fetch(`http://localhost:5000/upload_click_products`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(clicked_product),
+  });
 
   const result = await response.json();
 

@@ -8,9 +8,10 @@ export async function POST(req) {
   const object = await req.json();
   const user_id = JSON.parse(visitor.value)?.user_id;
 
-  const { id } = object;
+  const { id,title } = object;
 
   const saved_product_object = {
+    title,
     product_id: id,
     user_id,
   };

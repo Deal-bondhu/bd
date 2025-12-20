@@ -2,18 +2,16 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { CiBookmark } from "react-icons/ci";
 import toast from "react-hot-toast";
-import { IoIosSend } from "react-icons/io";
 
-const SaveProduct = ({ id, isSaved }) => {
+const SaveProduct = ({ id, isSaved, title }) => {
   const router = useRouter();
   const session = useSession();
 
-  const { user } = session?.data;
 
   const handleSave = async () => {
-    if (!user) {
+    if (!session?.data?.user) {
       return toast.error("LogIn First");
     }
     if (isSaved) {
@@ -25,7 +23,7 @@ const SaveProduct = ({ id, isSaved }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id, title }),
     });
 
     const result = await res.json();
@@ -43,9 +41,9 @@ const SaveProduct = ({ id, isSaved }) => {
       disabled={isSaved}
       className={`p-3 rounded-full ${
         isSaved && "bg-gray-400 text-white"
-      } border w-fit hover:bg-gray-400 hover:text-white`}
+      } border w-fit hover:bg-gray-400 cursor-pointer hover:text-white`}
     >
-      <IoIosSend />
+      <CiBookmark />
     </button>
   );
 };

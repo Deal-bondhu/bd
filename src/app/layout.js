@@ -29,12 +29,11 @@ export default function RootLayout({ children }) {
         <NextAuthSessionProvider>
           <ClientWrapper>
             <ReduxStoreProvider>
-              {/* <Test></Test> */}
               <HeadingMarquee></HeadingMarquee>
               <NavBar></NavBar>
               <Category></Category>
+              <Test></Test>
               {children}
-
               <Footer></Footer>
               <DealModal></DealModal>
             </ReduxStoreProvider>

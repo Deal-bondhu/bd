@@ -1,4 +1,4 @@
-import ProductCard from "@/components/global-layout-components/ProductCard";
+import ProductsSection from "@/components/page-layout/product-page/ProductsSection";
 
 const page = async ({ params, searchParams }) => {
   const { category } = await params;
@@ -7,7 +7,7 @@ const page = async ({ params, searchParams }) => {
   const deCodedSubCategory = decodeURIComponent(subcategory);
 
   const res = await fetch(
-    `${process.env.NEXT_BACKEND_URL}/get_products/${encodeURIComponent(
+    `http://localhost:5000/get_products/${encodeURIComponent(
       category
     )}?subcategory=${encodeURIComponent(subcategory)}`
   );
@@ -25,11 +25,7 @@ const page = async ({ params, searchParams }) => {
         {data?.length === 0 ? (
           <p className="text-center">No Product Found</p>
         ) : (
-          <div className=" grid lg:grid-cols-4 md:grid-cols-3 smd:grid-cols-2 grid-cols-1 place-items-center">
-            {data?.map((product, index) => {
-              return <ProductCard product={product} key={index}></ProductCard>;
-            })}
-          </div>
+          <ProductsSection get_products={data}></ProductsSection>
         )}
       </div>
     </div>

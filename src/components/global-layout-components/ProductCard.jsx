@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 
 import { MdLabelImportant } from "react-icons/md";
 
@@ -8,7 +7,6 @@ import { useRouter } from "next/navigation";
 import CornerRibbon from "./CornerRibbon";
 
 const ProductCard = ({ product }) => {
-  const [isLiked, setLiked] = useState(false);
   const router = useRouter();
 
   const handleRoute = async (product) => {

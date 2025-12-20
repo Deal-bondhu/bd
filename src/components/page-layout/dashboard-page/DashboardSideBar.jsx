@@ -5,6 +5,7 @@ import ArchiveProducts from "./ArchiveProducts";
 import CategoryPage from "./CategoryPage";
 import AllBanners from "./AllBanners";
 import AllProducts from "./AllProducts";
+import ClickedInfo from "./ClickedInfo";
 
 const DashboardSideBar = () => {
   const [tab, setTab] = useState("item1");
@@ -35,6 +36,7 @@ const DashboardSideBar = () => {
           {tab === "item3" && <PendingProducts></PendingProducts>}
           {tab === "item4" && <ArchiveProducts></ArchiveProducts>}
           {tab === "item5" && <AllBanners></AllBanners>}
+          {tab === "item6" && <ClickedInfo></ClickedInfo>}
         </div>
       </div>
 
@@ -55,6 +57,9 @@ const DashboardSideBar = () => {
           </li>
           <li>
             <a onClick={() => handleClick("item5")}>Banners</a>
+          </li>
+          <li>
+            <a onClick={() => handleClick("item6")}>Clicked User</a>
           </li>
         </ul>
       </div>

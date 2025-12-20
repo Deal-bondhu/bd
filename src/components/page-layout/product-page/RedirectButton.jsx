@@ -1,8 +1,10 @@
 "use client";
 
+import toast from "react-hot-toast";
+
 const RedirectButton = ({ product_link, title, company }) => {
   const handleDirect = async (e) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_track_info`, {
+    const res = await fetch(`http://localhost:5000/post_track_info`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +21,7 @@ const RedirectButton = ({ product_link, title, company }) => {
     if (result.acknowledged === true) {
       window.open(product_link, "blank");
     } else {
-      return alert("internal error ! Try Again");
+      return toast.error("internal error ! Try Again");
     }
   };
   return (
