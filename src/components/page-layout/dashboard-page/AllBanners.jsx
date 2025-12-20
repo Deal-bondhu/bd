@@ -1,13 +1,16 @@
 "use client";
 
 import imageUpload from "@/lib/imageUpload";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { GoTrash } from "react-icons/go";
+import { FaRegArrowAltCircleUp } from "react-icons/fa";
+import { FaRegArrowAltCircleDown } from "react-icons/fa";
 
 const AllBanners = () => {
   const [banners, setBanners] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const bannerSpeedRef = useRef(0);
 
   useEffect(() => {
     const fetchBanners = async () => {
@@ -17,6 +20,38 @@ const AllBanners = () => {
     };
     fetchBanners();
   }, [refresh]);
+
+  const handleBannerSpeed = async () => {
+    const get_millisecond = bannerSpeedRef?.current.value;
+    const trimmed = get_millisecond.trim("");
+    if (!trimmed) {
+      return toast.error("Enter Number");
+    } else {
+      const parsed = parseInt(trimmed);
+      if (parsed < 1000) {
+        return toast.error("value cant be less than 1000");
+      } else if (parsed > 10000) {
+        return toast.error("value cant be greater that 10000");
+      } else {
+        const res = await fetch(
+          "http://localhost:5000/update_swiper_speed/6944135c03cea8c48c6d3abd",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ time: parsed }),
+          }
+        );
+        const result = await res.json();
+        if (result.acknowledged === true) {
+          bannerSpeedRef.current.value = "";
+          setRefresh(!refresh);
+          return toast.success("Time Updated");
+        }
+      }
+    }
+  };
 
   const handleDelete = async (id) => {
     const res = await fetch(`http://localhost:5000/delete_banner/${id}`, {
@@ -49,7 +84,6 @@ const AllBanners = () => {
         },
         body: JSON.stringify(object),
       });
-
       const result = await res.json();
       if (result.acknowledged === true) {
         toast.success("Banner Added");
@@ -57,6 +91,23 @@ const AllBanners = () => {
         setRefresh(!refresh);
         return;
       }
+    }
+  };
+
+  const handleSort = async (id, sort) => {
+    const res = await fetch(
+      `http://localhost:5000/banner_sort?id=${id}&sort=${sort}`,
+      {
+        method: "PATCH",
+      }
+    );
+    const result = await res.json();
+    if (result?.acknowledged === true) {
+      toast.success(`banner moved to ${sort}`);
+      setRefresh(!refresh);
+      return;
+    } else {
+      return toast.error(result.message);
     }
   };
   return (
@@ -72,6 +123,8 @@ const AllBanners = () => {
             <thead>
               <tr>
                 <th>No</th>
+                <th className="">Up</th>
+                <th className="">Down</th>
                 <th>Company</th>
                 <th className="text-center">Delete</th>
                 <th>Banner Link</th>
@@ -82,6 +135,20 @@ const AllBanners = () => {
                 return (
                   <tr key={index}>
                     <th>{index + 1}</th>
+                    <td
+                      onClick={() => handleSort(banner?._id, "up")}
+                      className="text-center cursor-pointer"
+                    >
+                      <FaRegArrowAltCircleUp className="text-lg" />
+                    </td>
+                    <td
+                      onClick={() => handleSort(banner?._id, "down")}
+                      className="text-center "
+                    >
+                      <div className=" flex justify-center cursor-pointer">
+                        <FaRegArrowAltCircleDown className="text-lg" />
+                      </div>
+                    </td>
                     <td>{banner?.company}</td>
                     <td>
                       <div
@@ -125,6 +192,22 @@ const AllBanners = () => {
           />
           <button className="btn btn-sm w-fit">Add New</button>
         </form>
+      </div>
+
+      <div className="flex flex-col gap-2 my-5">
+        <label htmlFor="" className="label my-1">
+          Control Banner Speed
+        </label>
+        <input
+          ref={bannerSpeedRef}
+          required
+          type="number"
+          placeholder="Insert as millisecond"
+          className="input"
+        />
+        <button onClick={handleBannerSpeed} className="btn btn-sm w-fit">
+          Add Speed
+        </button>
       </div>
     </div>
   );

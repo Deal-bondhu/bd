@@ -1,12 +1,12 @@
 import { MdOutlineComment } from "react-icons/md";
 import { GiClick } from "react-icons/gi";
-import { CiBookmark } from "react-icons/ci";
 import RedirectButton from "@/components/page-layout/product-page/RedirectButton";
 import Liked from "@/components/page-layout/product-details-page/Liked";
 import { cookies } from "next/headers";
 import Unlike from "@/components/page-layout/product-details-page/Unlike";
 import CommentProduct from "@/components/page-layout/product-details-page/CommentProduct";
 import SaveProduct from "@/components/page-layout/product-details-page/SaveProduct";
+import { IoIosSend } from "react-icons/io";
 
 const page = async ({ params }) => {
   const { id } = await params;
@@ -14,7 +14,6 @@ const page = async ({ params }) => {
 
   const visitor = cookieStore.get("visitor");
   const user_id = JSON.parse(visitor.value)?.user_id;
-  // ${process.env.NEXT_BACKEND_URL}
   const res = await fetch(
     `http://localhost:5000
 /get_product/${id}`,
@@ -84,9 +83,11 @@ const page = async ({ params }) => {
             <SaveProduct
               id={product?._id}
               isSaved={product?.isSaved}
+              title={product?.title}
             ></SaveProduct>
             <div className="p-3 rounded-full border w-fit hover:bg-gray-400 hover:text-white">
-              <CiBookmark />
+              <IoIosSend />
+              
             </div>
           </div>
         </div>

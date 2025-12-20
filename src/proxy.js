@@ -23,7 +23,12 @@ export const proxy = async (req) => {
     });
   }
 
-  if (pathname.startsWith("/auth")) {
+  if (
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/reset_password") ||
+    pathname.startsWith("/verify_reset_code") ||
+    pathname.startsWith("/reset_new_password")
+  ) {
     if (token) {
       return NextResponse.redirect(homeUrl);
     }

@@ -8,9 +8,6 @@ const Category = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [categories, setCategories] = useState([]);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [isNameHovered, setIsNameHovered] = useState(false);
-  const [isDivHovered, setIsDivHovered] = useState(false);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -20,71 +17,53 @@ const Category = () => {
     fetchCategory();
   }, []);
 
-  // show div only if name or div is hovered
-  const showDiv = isNameHovered || isDivHovered;
-
-  const handleMouseLeaveName = () => {
-    setIsNameHovered(false);
-    // only reset hoveredIndex if div also not hovered
-    if (!isDivHovered) setHoveredIndex(null);
-  };
-
-  const handleMouseLeaveDiv = () => {
-    setIsDivHovered(false);
-    // only reset hoveredIndex if name also not hovered
-    if (!isNameHovered) setHoveredIndex(null);
+  const handleCategoryNavigate = (category) => {
+    router.push(`/products/${encodeURIComponent(category)}`);
   };
 
   return (
     (pathname === "/" || pathname.startsWith("/products")) && (
-      <section className="w-full relative">
+      <section className="w-full">
         <div
           id="trending-component"
-          className="w-full shadow-xl px-2 flex lg:justify-center md:justify-start justify-start items-center gap-6 overflow-x-scroll scrollbar-hidden"
+          className="w-full px-2 lg:flex lg:justify-center lg:items-center gap-6 relative hidden"
         >
-          {categories?.map((category, index) => (
-            <div
-              key={index}
-              onClick={() =>
-                router.push(`/products/${encodeURIComponent(category.name)}`)
-              }
-              onMouseEnter={() => {
-                setHoveredIndex(index);
-                setIsNameHovered(true);
-              }}
-              onMouseLeave={handleMouseLeaveName}
-              className="cursor-pointer py-1"
-            >
-              {category.name}
-            </div>
-          ))}
-        </div>
-
-        {showDiv && hoveredIndex !== null && (
-          <div
-            onMouseEnter={() => setIsDivHovered(true)}
-            onMouseLeave={handleMouseLeaveDiv}
-            className="absolute top-full z-50 bg-base-100 w-full  font-bold p-4 gap-1 place-items-start"
-          >
-            <div className="w-[80%] mx-auto grid grid-cols-2 gap-y-3">
-              {categories[hoveredIndex].subcategories.map((sub, i) => (
-                <p
-                  onClick={() =>
-                    router.push(
-                      `/products/${encodeURIComponent(
-                        categories[hoveredIndex].name
-                      )}?subcategory=${encodeURIComponent(sub)}`
-                    )
-                  }
-                  key={i}
-                  className="text-sm font-semibold cursor-pointer hover:text-blue-600"
+          {categories?.map((category, index) => {
+            return (
+              <div
+                onClick={() => handleCategoryNavigate(category?.name)}
+                key={index}
+                className="dropdown dropdown-hover dropdown-center"
+              >
+                <div tabIndex={0} role="button" className=" m-1">
+                  {category?.name}
+                </div>
+                <ul
+                  tabIndex="-1"
+                  className="dropdown-content menu bg-base-100 rounded-box z-100 w-fit p-1 shadow-sm border-t-2"
                 >
-                  {sub}
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
+                  {category?.subcategories?.map((subcategory, index) => {
+                    return (
+                      <li
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(
+                            `/products/${encodeURIComponent(
+                              category?.name
+                            )}?subcategory=${encodeURIComponent(subcategory)}`
+                          );
+                        }}
+                        key={index}
+                      >
+                        <a className="text-nowrap">{subcategory}</a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </section>
     )
   );

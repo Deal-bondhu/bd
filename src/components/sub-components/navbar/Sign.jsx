@@ -6,7 +6,6 @@ import { HiUserCircle } from "react-icons/hi2";
 
 const Sign = () => {
   const session = useSession();
-  console.log(session);
   const router = useRouter();
   const handleLogin = async() => {
     if (session.status === "unauthenticated") {

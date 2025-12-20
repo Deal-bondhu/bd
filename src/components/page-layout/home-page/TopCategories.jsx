@@ -9,7 +9,7 @@ const TopCategories = () => {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}
+    fetch(`http://localhost:5000
 /trending_categories`)
       .then((res) => res.json())
       .then((data) => {

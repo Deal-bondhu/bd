@@ -1,5 +1,4 @@
 "use client";
-import { LuMenu } from "react-icons/lu";
 import { BsSearch } from "react-icons/bs";
 // import { PiBellSimpleRingingThin } from "react-icons/pi";
 // import { BsPhone } from "react-icons/bs";
@@ -7,11 +6,20 @@ import BrandName from "@/components/global-layout-components/BrandName";
 import PostDeal from "@/components/sub-components/navbar/PostDeal";
 import { usePathname } from "next/navigation";
 import Sign from "@/components/sub-components/navbar/Sign";
+import MenuDrawerSmall from "@/components/sub-components/navbar/MenuDrawerSmall";
+import SavedItems from "@/components/sub-components/navbar/SavedItems";
 
 const NavBar = () => {
   const pathname = usePathname();
+  
 
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth")) {
+  if (
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/reset_password") ||
+    pathname.startsWith("/verify_reset_code") ||
+    pathname.startsWith("/reset_new_password")
+  ) {
     return;
   } else {
     return (
@@ -42,6 +50,7 @@ const NavBar = () => {
             <PiBellSimpleRingingThin />
             <p>Deal Alerts</p>
           </div> */}
+            <SavedItems></SavedItems>
             <PostDeal></PostDeal>
             {/* <div className=" bg-[#F4B40B] hover:bg-[#614805]">
             <BsPhone />
@@ -51,9 +60,9 @@ const NavBar = () => {
           </div>
 
           {/* menu for small screen  */}
-          <div className="mmd:hidden border">
-            <div className="text-white w-6 aspect-square">
-              <LuMenu className="h-full w-full" />
+          <div className="mmd:hidden">
+            <div className="w-6 aspect-square flex justify-center items-center">
+              <MenuDrawerSmall></MenuDrawerSmall>
             </div>
           </div>
         </section>

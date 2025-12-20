@@ -28,7 +28,6 @@ export const authOptions = {
         if (!user) {
           return null;
         } else {
-          console.log(user);
           return user;
         }
       },
