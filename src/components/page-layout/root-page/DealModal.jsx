@@ -76,8 +76,7 @@ const DealModal = () => {
       status: "pending",
     };
 
-    // http://localhost:5000
-    const promise = fetch(`http://localhost:5000/upload_pending_product`, {
+    const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_pending_product`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product_object),

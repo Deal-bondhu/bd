@@ -13,7 +13,7 @@ const ArchiveProducts = () => {
 
   useEffect(() => {
     const fetchArchiveProducts = async () => {
-      const response = await fetch("http://localhost:5000/archive_products");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/archive_products`);
       const data = await response.json();
       setArchiveProducts(data);
       setRefresh(false);
@@ -35,7 +35,7 @@ const ArchiveProducts = () => {
 
   const handleDelete = async (id) => {
     const response = await fetch(
-      `http://localhost:5000/delete_archive_product/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_archive_product/${id}`,
       {
         method: "DELETE",
       }

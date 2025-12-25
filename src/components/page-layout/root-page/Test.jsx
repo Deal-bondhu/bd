@@ -1,4 +1,6 @@
-const Test = () => {
+
+const Test = async() => {
+  
   return;
 };
 

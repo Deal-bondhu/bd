@@ -58,7 +58,7 @@ const ProductUpdateForm = ({ product }) => {
       subcategory: target.subcategory.value.toLowerCase(),
       status: "pending",
     };
-    const response = await fetch(`http://localhost:5000/update_pending_product/${product?._id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/update_pending_product/${product?._id}`, {
       method: "PATCH",
       headers : {
         "Content-Type" : "application/json"

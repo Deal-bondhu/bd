@@ -18,7 +18,7 @@ const ResetForm = () => {
     if (!email) {
       return toast.error("Enter a valid Email");
     }
-    const res = await fetch(`http://localhost:5000/verify_email/${email}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verify_email/${email}`, {
       method: "POST",
     });
     const result = await res.json();

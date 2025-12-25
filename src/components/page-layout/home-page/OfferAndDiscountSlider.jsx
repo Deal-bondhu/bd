@@ -17,7 +17,7 @@ const OfferAndDiscountSlider = () => {
 
   useEffect(() => {
     const fetchBanners = async () => {
-      const res = await fetch("http://localhost:5000/banners");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banners`);
       const data = await res.json();
       setBanners(data);
     };
@@ -27,7 +27,7 @@ const OfferAndDiscountSlider = () => {
   useEffect(() => {
     const fetchBannerSpeed = async () => {
       const res = await fetch(
-        "http://localhost:5000/get_swiper_speed/6944135c03cea8c48c6d3abd"
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get_swiper_speed/6944135c03cea8c48c6d3abd`
       );
       const banner_data = await res.json();
       setBannerSpeed(banner_data);

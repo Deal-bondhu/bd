@@ -19,7 +19,7 @@ const CategoryPage = () => {
     } else {
       const value = category.trim();
       const res = await fetch(
-        `http://localhost:5000/upload_category_subcategory?category=${encodeURIComponent(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_category_subcategory?category=${encodeURIComponent(
           value
         )}&subcategory=`,
         {
@@ -43,7 +43,7 @@ const CategoryPage = () => {
     } else {
       const value = subcategory.trim();
       const res = await fetch(
-        `http://localhost:5000/upload_category_subcategory?category=${encodeURIComponent(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_category_subcategory?category=${encodeURIComponent(
           category
         )}&subcategory=${encodeURIComponent(value)}`,
         {
@@ -62,7 +62,7 @@ const CategoryPage = () => {
   };
 
   const handleDeleteCategory = async (id) => {
-    const res = await fetch(`http://localhost:5000/delete_category/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_category/${id}`, {
       method: "DELETE",
     });
     const result = await res.json();
@@ -75,7 +75,7 @@ const CategoryPage = () => {
 
   const handleDeleteSubCategory = async (categoryId, subcategoryName) => {
     const res = await fetch(
-      `http://localhost:5000/delete_subcategory/${categoryId}?subcategory=${encodeURIComponent(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_subcategory/${categoryId}?subcategory=${encodeURIComponent(
         subcategoryName
       )}`,
       {

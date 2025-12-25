@@ -12,7 +12,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch("http://localhost:5000/admin_get_products");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin_get_products`);
       const data = await res.json();
       setProducts(data);
     };
@@ -21,7 +21,7 @@ const AllProducts = () => {
 
   const handleArchive = async (id) => {
     const res = await fetch(
-      `http://localhost:5000/archive_existing_product/${id}`,{
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/archive_existing_product/${id}`,{
         method : 'POST'
       }
     );

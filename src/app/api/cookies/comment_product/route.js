@@ -8,7 +8,7 @@ export async function POST(req) {
   const object = await req.json();
   const user_id = JSON.parse(visitor.value)?.user_id;
 
-  const response = await fetch("http://localhost:5000/upload_comment", {
+  const response = await fetch(`${process.env.NEXT_BACKEND_URL}/upload_comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

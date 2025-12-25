@@ -17,7 +17,7 @@ const ResetPasswordForm = () => {
     if (password !== confirm_password) {
       return toast.error("Password Did Not Matched");
     } else {
-      const res = await fetch("http://localhost:5000/reset_new_password", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reset_new_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

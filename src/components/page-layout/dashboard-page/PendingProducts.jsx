@@ -9,7 +9,7 @@ const PendingProducts = () => {
 
   useEffect(() => {
     const fetchPendingProducts = async () => {
-      const response = await fetch("http://localhost:5000/pending_products");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pending_products`);
       const data = await response.json();
       setPendingProducts(data);
     };
@@ -23,7 +23,7 @@ const PendingProducts = () => {
 
   const handleApprove = async (id) => {
     const response = await fetch(
-      `http://localhost:5000/approve_pending_product/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/approve_pending_product/${id}`,
       {
         method: "POST",
       }

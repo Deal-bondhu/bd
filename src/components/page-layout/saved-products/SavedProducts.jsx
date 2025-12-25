@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { GoTrash } from "react-icons/go";
 
 const SavedProducts = ({ products }) => {
   const [refresh, setRefresh] = useState(false);
@@ -17,7 +16,7 @@ const SavedProducts = ({ products }) => {
       return toast.error("user not found");
     } else {
       const res = await fetch(
-        `http://localhost:5000/delete_saved_product/${id}?user_id=${user_id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_saved_product/${id}?user_id=${user_id}`,
         {
           method: "DELETE",
         }
