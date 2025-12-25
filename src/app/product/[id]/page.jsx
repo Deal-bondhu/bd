@@ -15,7 +15,7 @@ const page = async ({ params }) => {
   const visitor = cookieStore.get("visitor");
   const user_id = JSON.parse(visitor.value)?.user_id;
   const res = await fetch(
-    `http://localhost:5000
+    `${process.env.NEXT_BACKEND_URL}
 /get_product/${id}`,
     {
       headers: {
@@ -63,11 +63,11 @@ const page = async ({ params }) => {
               id={product?._id}
               count={product?.unlike_count}
             ></Unlike>
-            <p className="flex gap-1 items-center">
+            <p className="flex gap-1 items-center cursor-pointer">
               <MdOutlineComment />
               {product?.comment_count}
             </p>
-            <p className="flex gap-1 items-center">
+            <p className="flex gap-1 items-center cursor-pointer">
               <GiClick />
               {product?.click_count}
             </p>

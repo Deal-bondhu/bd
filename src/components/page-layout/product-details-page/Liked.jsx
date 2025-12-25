@@ -25,7 +25,7 @@ const Liked = ({ liked, id, count }) => {
     }
   };
   return (
-    <p onClick={handleLike} className="flex gap-1 items-center">
+    <p onClick={handleLike} className="flex gap-1 items-center cursor-pointer">
       {liked ? <FcLike /> : <FcLikePlaceholder />} {count}
     </p>
   );

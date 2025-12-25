@@ -22,6 +22,7 @@ export const proxy = async (req) => {
       path: "/",
     });
   }
+  
 
   if (
     pathname.startsWith("/auth") ||
@@ -35,7 +36,7 @@ export const proxy = async (req) => {
   }
 
   if (pathname === "/dashboard") {
-    if (token.role !== "admin") {
+    if (token?.role !== "admin") {
       return NextResponse.redirect(homeUrl);
     }
   }
@@ -47,7 +48,7 @@ export const proxy = async (req) => {
   }
 
   if (pathname.startsWith("/update")) {
-    if (token.role !== "admin") {
+    if (token?.role !== "admin") {
       return NextResponse.redirect(homeUrl);
     }
   }

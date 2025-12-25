@@ -9,7 +9,7 @@ export async function POST(req) {
   const user_id = JSON.parse(visitor.value)?.user_id;
 
   const response = await fetch(
-    `http://localhost:5000
+    `${process.env.NEXT_BACKEND_URL}
 /like_product`,
     {
       method: "POST",

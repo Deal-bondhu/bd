@@ -28,7 +28,7 @@ const Unlike = ({ unliked, id, count }) => {
     }
   };
   return (
-    <p onClick={handleUnlike} className="flex gap-1 items-center">
+    <p onClick={handleUnlike} className="flex gap-1 items-center cursor-pointer">
       {unliked ? <FcDislike /> : <RiDislikeLine />} {count}
     </p>
   );

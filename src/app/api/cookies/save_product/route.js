@@ -16,7 +16,7 @@ export async function POST(req) {
     user_id,
   };
 
-  const res = await fetch("http://localhost:5000/upload_saved_product", {
+  const res = await fetch(`${process.env.NEXT_BACKEND_URL}/upload_saved_product`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

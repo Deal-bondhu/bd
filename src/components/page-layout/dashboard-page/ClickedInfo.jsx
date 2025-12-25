@@ -13,7 +13,7 @@ const ClickedInfo = () => {
   useEffect(() => {
     const fetchClickedData = async () => {
       const res = await fetch(
-        `http://localhost:5000/clicked_user_data?search=${search}&date=${date}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/clicked_user_data?search=${search}&date=${date}&limit=${limit}`
       );
       const result = await res.json();
       setData(result.data || []);

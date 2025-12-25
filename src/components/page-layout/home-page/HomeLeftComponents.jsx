@@ -23,17 +23,17 @@ const HomeLeftComponents = ({
           setProducts(data);
         });
     } else if (componentName === "trending-stores") {
-      fetch(`http://localhost:5000/trending_stores`)
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trending_stores`)
         .then((res) => res.json())
         .then((data) => setProducts(data));
     } else if (componentName === "fashion") {
-      fetch(`http://localhost:5000/get_products/fashion?subcategory=undefined`
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_products/fashion?subcategory=undefined`
       )
         .then((res) => res.json())
         .then((data) => setProducts(data));
     } else if (componentName === "electronics") {
       fetch(
-        `http://localhost:5000/get_products/electronics?subcategory=undefined`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get_products/electronics?subcategory=undefined`
       )
         .then((res) => res.json())
         .then((data) => setProducts(data));

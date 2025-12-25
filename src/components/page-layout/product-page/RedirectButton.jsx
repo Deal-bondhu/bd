@@ -4,18 +4,21 @@ import toast from "react-hot-toast";
 
 const RedirectButton = ({ product_link, title, company }) => {
   const handleDirect = async (e) => {
-    const res = await fetch(`http://localhost:5000/post_track_info`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        product_name: title,
-        product_link: product_link,
-
-        company,
-      }),
-    });
+    const click_document = {
+      product_name: title,
+      product_link: product_link,
+      company,
+    };
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/post_track_info`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(click_document),
+      }
+    );
 
     const result = await res.json();
     if (result.acknowledged === true) {

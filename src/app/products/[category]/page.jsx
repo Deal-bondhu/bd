@@ -7,7 +7,7 @@ const page = async ({ params, searchParams }) => {
   const deCodedSubCategory = decodeURIComponent(subcategory);
 
   const res = await fetch(
-    `http://localhost:5000/get_products/${encodeURIComponent(
+    `${process.env.NEXT_BACKEND_URL}/get_products/${encodeURIComponent(
       category
     )}?subcategory=${encodeURIComponent(subcategory)}`
   );

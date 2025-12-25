@@ -61,7 +61,7 @@ const ExistingProductUpdateForm = ({ product }) => {
       status: "pending",
     };
     const response = await fetch(
-      `http://localhost:5000/update_existing_product/${product?._id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/update_existing_product/${product?._id}`,
       {
         method: "PATCH",
         headers: {

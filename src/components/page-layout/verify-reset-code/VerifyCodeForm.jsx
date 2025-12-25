@@ -11,7 +11,7 @@ const VerifyCodeForm = () => {
     const target = e.target;
     const email = target.email.value;
     const code = target.otp.value;
-    const res = await fetch("http://localhost:5000/verify_reset_code", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verify_reset_code`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

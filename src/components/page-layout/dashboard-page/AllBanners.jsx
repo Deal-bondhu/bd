@@ -14,7 +14,7 @@ const AllBanners = () => {
 
   useEffect(() => {
     const fetchBanners = async () => {
-      const res = await fetch("http://localhost:5000/banners");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banners`);
       const data = await res.json();
       setBanners(data);
     };
@@ -34,7 +34,7 @@ const AllBanners = () => {
         return toast.error("value cant be greater that 10000");
       } else {
         const res = await fetch(
-          "http://localhost:5000/update_swiper_speed/6944135c03cea8c48c6d3abd",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/update_swiper_speed/6944135c03cea8c48c6d3abd`,
           {
             method: "PUT",
             headers: {
@@ -54,7 +54,7 @@ const AllBanners = () => {
   };
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://localhost:5000/delete_banner/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_banner/${id}`, {
       method: "DELETE",
     });
     const result = await res.json();
@@ -77,7 +77,7 @@ const AllBanners = () => {
         banner_link: image?.data.url,
       };
 
-      const res = await fetch("http://localhost:5000/upload_banner", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_banner`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const AllBanners = () => {
 
   const handleSort = async (id, sort) => {
     const res = await fetch(
-      `http://localhost:5000/banner_sort?id=${id}&sort=${sort}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/banner_sort?id=${id}&sort=${sort}`,
       {
         method: "PATCH",
       }

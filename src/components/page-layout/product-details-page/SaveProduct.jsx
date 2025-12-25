@@ -18,7 +18,7 @@ const SaveProduct = ({ id, isSaved, title }) => {
       return toast.error("Product Already Saved");
     }
 
-    const res = await fetch("http://localhost:3000/api/cookies/save_product", {
+    const res = await fetch(`/api/cookies/save_product`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
