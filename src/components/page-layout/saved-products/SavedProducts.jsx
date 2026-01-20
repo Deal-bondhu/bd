@@ -1,12 +1,15 @@
 "use client";
 
+import { LanguageContext } from "@/context/GlobalLanguageProvider";
+import translation from "@/utils/translation";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 
 const SavedProducts = ({ products }) => {
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
+  const {lan} = useContext(LanguageContext)
 
   const handleDeleteSavedProduct = async (id) => {
     const user_res = await fetch("/api/cookies/get_user_id");
@@ -44,7 +47,7 @@ const SavedProducts = ({ products }) => {
             className="text-2xl font-semibold text-center mt-3
            mb-6"
           >
-            Saved Products
+            {translation[lan].savedItems.heading}
           </p>
           <section className="w-full md:w-4/5 mx-auto px-3 my-5 flex flex-col gap-2">
             {products?.map((product, index) => {
@@ -63,13 +66,13 @@ const SavedProducts = ({ products }) => {
                     </p>
                     <div className="flex flex-col smd:gap-1 smd:text-base">
                       <p>
-                        Category :{" "}
+                        {translation[lan].common.category} :{" "}
                         <span className="font-normal">{product?.category}</span>
                       </p>
                       <p>
-                        Price :{" "}
+                        {translation[lan].common.price} :{" "}
                         <span className="font-normal">
-                          {product?.offer_price} TAKA
+                          {product?.offer_price} {translation[lan].common.taka}
                         </span>
                       </p>
                     </div>
@@ -78,13 +81,13 @@ const SavedProducts = ({ products }) => {
                         onClick={() => handleRoute(product?._id)}
                         className="link link-hover text-blue-400"
                       >
-                        See details
+                        {translation[lan].common.see_details}
                       </p>
                       <p
                         onClick={() => handleDeleteSavedProduct(product?._id)}
                         className="link link-hover text-red-400"
                       >
-                        Delete
+                        {translation[lan].common.delete}
                       </p>
                     </div>
                   </div>

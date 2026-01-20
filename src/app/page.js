@@ -3,10 +3,16 @@ import HomeRightComponents from "@/components/page-layout/home-page/HomeRightCom
 import TopCategories from "@/components/page-layout/home-page/TopCategories";
 
 import { PiFireFill } from "react-icons/pi";
-import { IoTrendingUp } from "react-icons/io5";
 import OfferAndDiscountSlider from "@/components/page-layout/home-page/OfferAndDiscountSlider";
+import { cookies } from "next/headers";
+import translation from "@/utils/translation";
+import HomeRisingStars from "@/components/page-layout/home-page/HomeRisingStars";
+import HomeLeaderBoard from "@/components/page-layout/home-page/HomeLeaderBoard";
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies();
+  const get_lang = cookieStore.get("lang");
+  const lang = get_lang ? (JSON.parse(get_lang.value)?.lang || 'en') : 'en';
   return (
     <>
       <OfferAndDiscountSlider></OfferAndDiscountSlider>
@@ -15,18 +21,18 @@ export default function Home() {
         <section className="lg:w-[70%] md:w-[65%]">
           <HomeLeftComponents
             componentName="just-for-you"
-            Heading="Just For You"
+            Heading={translation[lang].homeLeftComponent.heading.just_for_you}
           ></HomeLeftComponents>
 
           <HomeLeftComponents
             componentName="trending-stores"
-            Heading="Trending Stores"
+            Heading={translation[lang].homeLeftComponent.heading.trending_store}
           ></HomeLeftComponents>
         </section>
         <section className="lg:w-[30%] md:w-[35%] w-full">
           <HomeRightComponents
             componentName={"popular-deals"}
-            Heading="Popular Deals"
+            Heading={translation[lang].homeRightComponent.heading.popular_deals}
             HeadingIcon={<PiFireFill />}
           ></HomeRightComponents>
 
@@ -44,13 +50,15 @@ export default function Home() {
       </div>
       <TopCategories></TopCategories>
       <HomeLeftComponents
-        Heading="Fashion"
-        componentName="fashion"
+        Heading={translation[lang].homeLeftComponent.heading.fashion}
+        componentName='fashion'
       ></HomeLeftComponents>
       <HomeLeftComponents
-        Heading="Electronics"
-        componentName="electronics"
+        Heading={translation[lang].homeLeftComponent.heading.electronics}
+        componentName='electronics'
       ></HomeLeftComponents>
+      <HomeLeaderBoard></HomeLeaderBoard>
+      <HomeRisingStars></HomeRisingStars>
     </>
   );
 }

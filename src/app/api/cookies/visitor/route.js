@@ -29,8 +29,8 @@ export async function POST(req) {
     product_id: product_object?._id,
     category: product_object?.category,
     subcategory: product_object?.subcategory,
+    dealer_id : product_object?.dealer_id
   };
-
   const response = await fetch(`${process.env.NEXT_BACKEND_URL}/upload_click_products`, {
     method: "POST",
     headers: {

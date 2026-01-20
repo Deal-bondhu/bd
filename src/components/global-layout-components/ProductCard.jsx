@@ -1,13 +1,18 @@
 "use client";
 
-import { MdLabelImportant } from "react-icons/md";
+import { MdLabelImportant, MdOutlineInsertComment } from "react-icons/md";
 
 import { IoMdShare } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import CornerRibbon from "./CornerRibbon";
+import { useContext } from "react";
+import { LanguageContext } from "@/context/GlobalLanguageProvider";
+import translation from "@/utils/translation";
+import { FcLike } from "react-icons/fc";
 
 const ProductCard = ({ product }) => {
   const router = useRouter();
+  const { lan } = useContext(LanguageContext);
 
   const handleRoute = async (product) => {
     // make product object like {product : category}
@@ -26,7 +31,7 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => handleRoute(product)}
-      className="relative overflow-hidden w-full max-w-[200px] p-2  bg-[#d1e2f5] hover:bg-[#76ace9] rounded-lg shadow-2xl my-2 cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="relative overflow-hidden w-full max-w-[200px] p-2  border-2 rounded-lg shadow-2xl my-2 cursor-pointer transition-transform duration-300 hover:scale-105"
     >
       {/* ribbon component  */}
       <CornerRibbon discount={product?.offer_percent}></CornerRibbon>
@@ -48,27 +53,48 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* product name  */}
-      <p className="mt-2 line-clamp-2 min-h-9 text-[12px] font-medium">
+      <p className="mt-2 line-clamp-1 text-base font-semibold">
         {product?.title ? product.title : "Unknown"}
       </p>
 
       {/* price  */}
       <div className="flex items-center gap-3 mt-2 font-medium">
         {/* <GiPriceTag /> */}
-        <img className="w-4 aspect-square" src="/logo/bdt-logo.png" alt="" />
-        <p className="text-[12px]">{product?.offer_price ? product?.offer_price + " TK" : "Unknown"}</p>
+        {/* <img className="w-4 aspect-square bg-white" src="/logo/taka-logo.png" alt="" /> */}
+        <p className="text-[12px]">
+          ৳{" "}
+          {product?.offer_price
+            ? product?.offer_price + ` ${translation[lan].common.taka}`
+            : ""}
+        </p>
         {/* discount  */}
         <span className="line-through text-[12px] font-semibold text-red-600">
-          {product?.regular_price ? product?.regular_price + " TK" : "Unknown"}
+          {product?.regular_price
+            ? product?.regular_price + ` ${translation[lan].common.taka}`
+            : ""}
         </span>
       </div>
 
       {/* brand name  */}
       <div className="flex items-center gap-3">
         <MdLabelImportant />{" "}
-        <span className="font-medium text-xso">
-          {product?.company ? product?.company : "Unknown"}
+        <span className="font-medium text-xs">
+          {product?.company ? product?.company : ""}
         </span>
+      </div>
+
+      {/* like and comments  */}
+      <div className="flex items-center gap-3 mt-2">
+        {/* like  */}
+        <div className="flex items-center gap-1">
+          <FcLike />
+          <span className="text-sm">{product?.likes || 0}</span>
+        </div>
+        {/* comment  */}
+        <div className="flex items-center gap-1">
+          <MdOutlineInsertComment />
+          <span className="text-sm">{product?.comments || 0}</span>
+        </div>
       </div>
     </div>
   );

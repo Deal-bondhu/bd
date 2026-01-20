@@ -48,6 +48,10 @@ const translation = {
       monthly_point: "Monthly Points",
       days_left: "Days Left",
     },
+    messages: {
+      success: {},
+      error: {},
+    },
     root: {},
     headingMarquee:
       "DealBondhu is community-supported. We may get paid by brands for deals, including promoted items.",
@@ -98,6 +102,8 @@ const translation = {
         top_categories: "Top Categories",
         fashion: "Fashion",
         electronics: "Electronics",
+        leaderboard: "All Time Leaderboard",
+        rising_stars: "Rising Stars in This Month",
       },
     },
     homeRightComponent: {
@@ -172,7 +178,9 @@ const translation = {
         },
         heading: "Categories",
         add_category: "add category",
+        add_category_bangla: "write in bangla",
         add_subcategory: "add subcategory",
+        add_subcategory_bangla: "write in bangla",
       },
       clickedInfo: {
         heading: "Clicked Info",
@@ -180,6 +188,48 @@ const translation = {
         searchbar_placeholder: "Search by name,company",
         pick_a_date: "Pick a Date",
       },
+    },
+    verifyResetCode: {},
+    resetPage: {},
+    resetPassword: {},
+
+    authenticationPage: {
+      login: {
+        heading: "Account SignIn",
+        email: {
+          email_heading: "Email",
+          email_placeholder: "Email",
+        },
+        password: {
+          password_heading: "Password",
+          password_placeholder: "Password",
+        },
+      },
+      registration: {
+        heading: "Create an Account",
+        email: {
+          email_heading: "Email",
+          email_placeholder: "Email",
+        },
+        your_name: {
+          name_heading: "Your Name",
+          name_placeholder: "Your Name",
+        },
+        password: {
+          password_heading: "Password",
+          password_placeholder: "Password",
+        },
+        confirm_password: {
+          confirm_password_heading: "Confirm Password",
+          confirm_password_placeholder: "Confirm Password",
+        },
+      },
+      forgotPassword: "Forgot Password?",
+      signUp: "Sign Up",
+      signIn: "Sign In",
+      logIn: "LogIn",
+      register: "Register",
+      signInWithGoogle: "Sign In with Google",
     },
   },
   bn: {
@@ -231,6 +281,10 @@ const translation = {
       monthly_point: "মাসিক পয়েন্ট",
       days_left: "দিন বাকি",
     },
+    messages: {
+      success: {},
+      error: {},
+    },
     headingMarquee:
       "ডিলবন্ধু কমিউনিটি-সমর্থিত। আমরা কিছু ডিল বা প্রমোটেড আইটেমের জন্য ব্র্যান্ড থেকে অর্থ পেতে পারি।",
     navbar: {
@@ -281,6 +335,8 @@ const translation = {
         top_categories: "টপ ক্যাটেগরি",
         fashion: "ফ্যাশন",
         electronics: "ইলেকট্রনিক্স",
+        leaderboard: "লিডারবোর্ড",
+        rising_stars: "মাসিক লিডারবোর্ড",
       },
     },
     homeRightComponent: {
@@ -355,7 +411,9 @@ const translation = {
         },
         heading: "ক্যাটাগরি",
         add_category: "ক্যাটাগরি যোগ করুন",
+        add_category_bangla: "ক্যাটাগরি বাংলায় লিখুন",
         add_subcategory: "সাবক্যাটাগরি যোগ করুন",
+        add_subcategory_bangla: "সাবক্যাটাগরি বাংলায় লিখুন",
       },
       clickedInfo: {
         heading: "ক্লিক তথ্য",
@@ -363,6 +421,47 @@ const translation = {
         searchbar_placeholder: "নাম বা কোম্পানি দ্বারা খুঁজুন",
         pick_a_date: "তারিখ নির্বাচন করুন",
       },
+    },
+    verifyResetCode: {},
+    resetPage: {},
+    resetPassword: {},
+    authenticationPage: {
+      login: {
+        heading: "লগইন করুন",
+        email: {
+          email_heading: "ইমেইল",
+          email_placeholder: "ইমেইল লিখুন",
+        },
+        password: {
+          password_heading: "পাসওয়ার্ড",
+          password_placeholder: "পাসওয়ার্ড লিখুন",
+        },
+      },
+      registration: {
+        heading: "অ্যাকাউন্ট তৈরি করুন",
+        email: {
+          email_heading: "ইমেইল",
+          email_placeholder: "ইমেইল লিখুন",
+        },
+        your_name: {
+          name_heading: "আপনার নাম",
+          name_placeholder: "নাম লিখুন",
+        },
+        password: {
+          password_heading: "পাসওয়ার্ড",
+          password_placeholder: "পাসওয়ার্ড লিখুন",
+        },
+        confirm_password: {
+          confirm_password_heading: "পাসওয়ার্ড নিশ্চিত করুন",
+          confirm_password_placeholder: "পাসওয়ার্ড আবার লিখুন",
+        },
+      },
+      forgotPassword: "পাসওয়ার্ড ভুলে গেছেন?",
+      signUp: "সাইন আপ",
+      signIn: "সাইন ইন",
+      logIn: "লগইন",
+      register: "রেজিস্টার",
+      signInWithGoogle: "গুগল সাইন ইন করুন",
     },
   },
 };
