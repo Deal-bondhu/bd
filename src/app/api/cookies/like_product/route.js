@@ -7,6 +7,7 @@ export async function POST(req) {
 
   const object = await req.json();
   const user_id = JSON.parse(visitor.value)?.user_id;
+  const { category, subcategory, dealer_id } = object;
 
   const response = await fetch(
     `${process.env.NEXT_BACKEND_URL}
@@ -16,7 +17,13 @@ export async function POST(req) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ user_id, product_id: object }),
+      body: JSON.stringify({
+        user_id,
+        product_id: object?.id,
+        category,
+        subcategory,
+        dealer_id,
+      }),
     }
   );
 

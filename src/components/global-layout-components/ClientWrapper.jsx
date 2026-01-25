@@ -8,9 +8,8 @@ const ClientWrapper = ({ children }) => {
     const setCookies = async () => {
       const res = await fetch("/api/cookies/set_cookies");
       const result = await res.json();
-      console.log(result);
     };
-    setCookies()
+    setCookies();
     setMounted(true);
   }, []);
   if (!mounted) return null;

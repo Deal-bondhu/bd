@@ -3,11 +3,13 @@
 import getCategory from "@/actions/category/getCategory";
 import { closeModal } from "@/redux/features/modalSlice";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
+import { LanguageContext } from "@/context/GlobalLanguageProvider";
+import translation from "@/utils/translation";
 
 const DealModal = () => {
   const isOpen = useSelector((state) => state.deal_modal.isOpen);
@@ -15,6 +17,7 @@ const DealModal = () => {
   const dialogueRef = useRef(null);
   const productInfoRef = useRef(null);
   const router = useRouter();
+  const {lan} = useContext(LanguageContext)
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -61,43 +64,53 @@ const DealModal = () => {
       return alert("Please enter numeric values.");
     }
 
-    const product_object = {
-      title: target.title.value,
-      company: target.company.value,
-      regular_price: parseInt(regularPrice),
-      offer_price: parseInt(offerPrice),
-      offer_percent: parseInt(offerPercent),
-      expired_at: startDate,
-      product_info: productInfo,
-      product_link: target.product_link.value,
-      product_image: target.product_image.value,
-      category: target.category.value.toLowerCase(),
-      subcategory: target.subcategory.value.toLowerCase(),
-      status: "pending",
-    };
+    const response = await fetch("/api/cookies/get_user_id");
+    const user_object = await response.json();
 
-    const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_pending_product`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product_object),
-    }).then(async (res) => {
-      if (!res.ok) throw new Error("Upload failed");
-      return res.json();
-    });
+    const userId = user_object?.user_id;
 
-    toast.promise(promise, {
-      loading: "Uploading Deal",
-      success: (result) => {
-        if (result?.acknowledged === true) {
-          router.refresh();
-          dispatch(closeModal());
-          e.target.reset();
-          return "Deal Submitted Successfully";
+    if (userId) {
+      const product_object = {
+        dealer_id : userId,
+        title: target.title.value,
+        company: target.company.value,
+        regular_price: parseInt(regularPrice),
+        offer_price: parseInt(offerPrice),
+        offer_percent: parseInt(offerPercent),
+        expired_at: startDate,
+        product_info: productInfo,
+        product_link: target.product_link.value,
+        product_image: target.product_image.value,
+        category: target.category.value.toLowerCase(),
+        subcategory: target.subcategory.value.toLowerCase(),
+        status: "pending",
+      };
+      const promise = fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_pending_product`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(product_object),
         }
-        throw new Error("Failed !");
-      },
-      error: "Insert failed",
-    });
+      ).then(async (res) => {
+        if (!res.ok) throw new Error("Upload failed");
+        return res.json();
+      });
+
+      toast.promise(promise, {
+        loading: "Uploading Deal",
+        success: (result) => {
+          if (result?.acknowledged === true) {
+            router.refresh();
+            dispatch(closeModal());
+            e.target.reset();
+            return "Deal Submitted Successfully";
+          }
+          throw new Error("Failed !");
+        },
+        error: "Insert failed",
+      });
+    }
   };
 
   return (
@@ -120,12 +133,12 @@ const DealModal = () => {
             className="flex flex-col items-center gap-3"
           >
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Title</legend>
+              <legend className="fieldset-legend">{translation[lan].common.title}</legend>
               <input required type="text" name="title" className="input" />
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Category</legend>
+              <legend className="fieldset-legend">{translation[lan].common.category}</legend>
               <select
                 required
                 name="category"
@@ -134,7 +147,7 @@ const DealModal = () => {
                 onChange={handleCategoryChange}
               >
                 <option disabled value="">
-                  Choose Category
+                  {translation[lan].common.choose_category}
                 </option>
 
                 {categories?.map((cat) => (
@@ -146,7 +159,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Sub Category</legend>
+              <legend className="fieldset-legend">{translation[lan].common.subcategory}</legend>
               <select
                 required
                 name="subcategory"
@@ -155,23 +168,23 @@ const DealModal = () => {
                 disabled={!selectedCategory}
               >
                 <option disabled value="">
-                  Choose Subcategory
+                  {translation[lan].common.choose_subcategory}
                 </option>
                 {subcategories.map((sub) => (
-                  <option key={sub} value={sub}>
-                    {sub}
+                  <option key={sub} value={sub?.name}>
+                    {sub?.name}
                   </option>
                 ))}
               </select>
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Company</legend>
+              <legend className="fieldset-legend">{translation[lan].common.company}</legend>
               <input required type="text" name="company" className="input" />
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Regular Price</legend>
+              <legend className="fieldset-legend">{translation[lan].common.regular_price}</legend>
               <input
                 required
                 type="number"
@@ -181,7 +194,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Offer Price</legend>
+              <legend className="fieldset-legend">{translation[lan].common.offer_price}</legend>
               <input
                 required
                 type="number"
@@ -191,7 +204,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Offer Percent</legend>
+              <legend className="fieldset-legend">{translation[lan].common.offer_percent}</legend>
               <input
                 required
                 type="number"
@@ -201,7 +214,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Set Expire Date</legend>
+              <legend className="fieldset-legend">{translation[lan].common.set_expire_date}</legend>
               <DatePicker
                 required
                 selected={startDate}
@@ -215,7 +228,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset w-full">
-              <legend className="fieldset-legend">Product Info</legend>
+              <legend className="fieldset-legend">{translation[lan].common.product_info}</legend>
 
               <div
                 contentEditable
@@ -273,7 +286,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Product Link</legend>
+              <legend className="fieldset-legend">{translation[lan].common.product_link}</legend>
               <input
                 required
                 type="text"
@@ -283,7 +296,7 @@ const DealModal = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Product Image</legend>
+              <legend className="fieldset-legend">{translation[lan].common.product_image}</legend>
               <input
                 required
                 type="text"
@@ -292,14 +305,14 @@ const DealModal = () => {
               />
             </fieldset>
 
-            <div className="flex items-center justify-center gap-3">
-              <button className="btn">Submit</button>
+            <div className="flex items-center justify-center gap-3 ">
+              <button className="btn bg-[#006A4E] text-white">{translation[lan].common.submit}</button>
               <button
                 type="button"
                 onClick={() => dispatch(closeModal())}
-                className="btn"
+                className="btn bg-[#F42A41] text-white"
               >
-                cancel
+                {translation[lan].common.cancel}
               </button>
             </div>
           </form>

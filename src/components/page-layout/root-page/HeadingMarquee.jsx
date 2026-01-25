@@ -1,9 +1,12 @@
 "use client";
+import { LanguageContext } from "@/context/GlobalLanguageProvider";
+import translation from "@/utils/translation";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 import Marquee from "react-fast-marquee";
 
 const HeadingMarquee = () => {
+  const { lan } = useContext(LanguageContext);
   const pathname = usePathname();
   if (
     pathname.startsWith("/dashboard") ||
@@ -16,10 +19,9 @@ const HeadingMarquee = () => {
     return;
   } else {
     return (
-      <Marquee pauseOnHover className=" w-full h-8 bg-[#F5F7FA]">
-        <p className=" mr-20  lg:mr-0 font-medium">
-          DealBondhu is community-supported. We may get paid by brands for
-          deals, including promoted items.
+      <Marquee pauseOnHover className=" w-full h-8">
+        <p className="mr-20 lg:mr-0 font-medium">
+          {translation[lan].headingMarquee}
         </p>
       </Marquee>
     );

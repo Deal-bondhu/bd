@@ -14,28 +14,33 @@ import { useEffect, useState } from "react";
 const OfferAndDiscountSlider = () => {
   const [bannerSpeed, setBannerSpeed] = useState({});
   const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBanners = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banners`);
-      const data = await res.json();
-      setBanners(data);
-    };
-    fetchBanners();
-  }, []);
+    const fetchData = async () => {
+      const [bannerRes, speedRes] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banners`),
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/get_swiper_speed/6944135c03cea8c48c6d3abd`
+        ),
+      ]);
 
-  useEffect(() => {
-    const fetchBannerSpeed = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get_swiper_speed/6944135c03cea8c48c6d3abd`
-      );
-      const banner_data = await res.json();
-      setBannerSpeed(banner_data);
+      const bannerData = await bannerRes.json();
+      const speedData = await speedRes.json();
+
+      setBanners(bannerData);
+      setBannerSpeed(speedData);
+      setLoading(false);
     };
-    fetchBannerSpeed();
+
+    fetchData();
   }, []);
-  return (
-    <section className="w-full lg:mt-5 md:mt-4 smd:mt-3 mt-2 aspect-[1/0.3]">
+  return loading ? (
+    <div className="w-full aspect-[1/0.35] flex justify-center items-center">
+      <span className="loading loading-dots loading-md"></span>
+    </div>
+  ) : (
+    <section className="w-full aspect-[1/0.35]">
       <Swiper
         grabCursor={true}
         effect={"creative"}
